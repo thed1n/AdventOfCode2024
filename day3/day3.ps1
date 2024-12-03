@@ -10,15 +10,16 @@ $data | select-string -Pattern 'mul\(\d+,\d+\)' -AllMatches | % {
 }
 
 $sumpt2 = 0
+$processData = $true
 $data | select-string -Pattern 'do\(\)|don.t\(\)|mul\(\d+,\d+\)' -AllMatches | % {
     $_.Matches.Value | % {
         if ($_ -match 'don.t\(\)') {
-            $process = $false
+            $processData = $false
         }
         if ($_ -match 'do\(\)') {
-            $process = $true
+            $processData = $true
         }
-        if ($process -and $_ -match 'mul') {
+        if ($processData -and $_ -match 'mul') {
             $n = $_ -replace 'mul\(|\)$'
             $a,$b = $n -split ','
             $sumpt2+= $a*$b
@@ -26,5 +27,7 @@ $data | select-string -Pattern 'do\(\)|don.t\(\)|mul\(\d+,\d+\)' -AllMatches | %
     }
 }
 
-$sum
-$sumpt2
+[PSCustomObject]@{
+    part1 = $sum
+    part2 = $sumpt2
+}
