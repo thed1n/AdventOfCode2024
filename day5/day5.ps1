@@ -31,10 +31,7 @@ foreach ($row in $pages) {
 $inOrder = $true    
     for ($i = 1; $i -lt $row.count; $i++) {
 
-        $row[$i..$row.count] | ForEach-Object {
-            $nr = $_
-            #write-host "$_ $i"
-            
+            $nr = $row[$i]
             if ($printOrder.ContainsKey($row[$i - 1])) {
                 if (!$printOrder[$row[$i - 1]].Contains($nr)) {
                     #Write-Warning "$($row -join ' ') is not in order"
@@ -43,13 +40,6 @@ $inOrder = $true
                     break
                 }
             }
-            if ($printOrder.ContainsKey($nr) -and $printorder[$nr].Contains($row[$i - 1])) {
-                #Write-Warning "$($row -join ' ') is not in order"
-                $unOrderedPages.add($row)
-                $inOrder =$false
-                break
-            }
-        }
     }
     if ($inOrder) {
         $sum += $row[[math]::floor($row.count / 2)]
