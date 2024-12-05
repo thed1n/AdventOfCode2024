@@ -4,7 +4,6 @@ $data = Get-Content -Path .\day5\input.txt
 [list[int[]]]$pages = @()
 [list[int[]]]$unOrderedPages = @()
 $printOrder = @{}
-$parent = @{}
 
 $data | ForEach-Object {
 
@@ -34,7 +33,6 @@ $inOrder = $true
             $nr = $row[$i]
             if ($printOrder.ContainsKey($row[$i - 1])) {
                 if (!$printOrder[$row[$i - 1]].Contains($nr)) {
-                    #Write-Warning "$($row -join ' ') is not in order"
                     $unOrderedPages.add($row)
                     $inOrder =$false
                     break
@@ -54,12 +52,9 @@ while ($true) {
     for ($i = 1; $i -lt $unsortedPage.count; $i++) {
         #iterate through until its sorted according to the rules
         if ($printOrder.ContainsKey($unsortedPage[$i]) -and $printorder[$unsortedPage[$i]].Contains($unsortedPage[$i - 1])) {
-            #Write-host "$($unsortedPage -join ',')"
             $tempnr = $unsortedPage[$i - 1]
             $unsortedPage[$i - 1] = $unsortedPage[$i]
             $unsortedPage[$i] = $tempnr
-            #write-host "Swapped $($unsortedPage[$i-1]) with $($unsortedPage[$i])"
-            #Write-host "$($unsortedPage -join ',')"
             $changed = $true
         }
     }
