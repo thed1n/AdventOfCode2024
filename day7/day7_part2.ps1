@@ -28,6 +28,9 @@ function test-equation {
 
         [uint64]$add = $sum + $op[$position]
         [uint64]$multiply = $sum * $op[$position]
+        [uint64]$concat = "$sum$($op[$position])"
+        
+
         if ($result -eq $add -and $position -eq $op.count-1) { 
             write-verbose "add $($op-join ' ') pos [$position] sum [$add] -result [$result]"
             $memo.add('done',0)
@@ -35,6 +38,11 @@ function test-equation {
         }
         elseif ($result -eq $multiply -and $position -eq $op.count-1) {
             write-verbose "mult $($op-join ' ') pos [$position] sum [$multiply] -result [$result]"
+            $memo.add('done',0)
+            return $true
+        }
+        elseif ($result -eq $concat -and $position -eq $op.count-1) {
+            write-verbose "concat $($op-join ' ') pos [$position] sum [$concat] -result [$result]"
             $memo.add('done',0)
             return $true
         }
@@ -47,8 +55,13 @@ function test-equation {
         if ($multiply -le $result) {
             test-equation -sum $multiply -result $result -position $position -op $op -memo $memo
         }
+        if ($concat -le $result) {
+            test-equation -sum $concat -result $result -position $position -op $op -memo $memo -concatenabled
+        }
+        
         
 }
+
 
 foreach ($op in $equations) {
     if (test-equation -op $op.Operators -position 1 -sum $op.Operators[0] -result $op.Sum -memo @{} -Verbose) {
