@@ -56,7 +56,7 @@ function test-equation {
             test-equation -sum $multiply -result $result -position $position -op $op -memo $memo
         }
         if ($concat -le $result) {
-            test-equation -sum $concat -result $result -position $position -op $op -memo $memo -concatenabled
+            test-equation -sum $concat -result $result -position $position -op $op -memo $memo
         }
         
         
