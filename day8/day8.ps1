@@ -1,5 +1,5 @@
 using namespace system.collections.generic
-$data = Get-Content -Path .\day8\test.txt
+$data = Get-Content -Path .\day8\input.txt
 
 function manhattan {
     param(
@@ -13,8 +13,8 @@ function manhattan {
     return [math]::abs($x1-$x2) + [math]::abs($y1-$y2)
 
 }
-$grid = @{}
-$antennas = @{}
+$grid = [ordered]@{}
+$antennas= [hashtable]::new([System.StringComparer]::Ordinal)
 for ($y = 0; $y -lt $data.count; $y++) {
     for ($x = 0; $x -lt $data[0].Length; $x++) {
         if ($data[$y][$x] -ne '.') {
@@ -25,11 +25,65 @@ for ($y = 0; $y -lt $data.count; $y++) {
 }
 
 
+$signals = [hashset[string]]@{}
 
 foreach ($key in $antennas.Keys) {
+    for ($i=0;$i -lt $antennas[$key].count-1 ;$i++){
+        for ($j=$i+1;$j -lt $antennas[$key].count;$j++) {
+            if ($i -eq $j) {continue}
+                [int]$xa1,[int]$ya1 = $antennas[$key][$i] -split ','
+                [int]$xa2,[int]$ya2 = $antennas[$key][$j] -split ','
+                
+                    [int]$xStep = [math]::abs($xa1-$xa2)
+                    [int]$yStep = [math]::abs($ya1-$ya2)
 
-    for ($i=0;$i -lt $antennas[$key].count ;$i++){
-        manhattan $antennas[$key][$i] -pos2 $antennas[$key][$i+1]
+                if (($ya1 - $yStep) -ge 0 -and ($ya1 -$ystep) -lt $data.count) {
+                    if ($xa1 -lt $xa2) {
+                        if (($xa1-$xstep) -ge 0 -and ($xa1-$xstep) -lt $data[0].Length) {
+                            $signal1 = "$($xa1-$xStep),$($ya1-$ystep)"
+                            [void]$signals.add($signal1)
+                        }
+                    }
+                    else {
+                        if (($xa1+$xstep) -ge 0 -and ($xa1+$xstep) -lt $data[0].Length) {
+                            $signal1 = "$($xa1+$xStep),$($ya1-$ystep)"
+                            [void]$signals.add($signal1)
+                        }
+                    }
+
+                }
+                if (($ya2 + $yStep) -ge 0 -and ($ya2 +$ystep) -lt $data.count) {
+                    if ($xa1 -lt $xa2) {
+                        if (($xa2+$xstep) -ge 0 -and ($xa2+$xstep) -lt $data[0].Length) {
+                            $signal2 = "$($xa2+$xStep),$($ya2+$ystep)"
+                            [void]$signals.add($signal2)
+                        }
+                    }
+                    else {
+                        if (($xa2-$xstep) -ge 0 -and ($xa2-$xstep) -lt $data[0].Length) {
+                            $signal2 = "$($xa2-$xStep),$($ya2+$ystep)"
+                            [void]$signals.add($signal2)
+                        }
+                    }
+                }
+        }
     }
-
 }
+
+
+for ($y = 0; $y -lt $data.count; $y++) {
+    for ($x = 0; $x -lt $data[0].Length; $x++) {
+        if ($data[$y][$x] -ne '.' -and !$signals.Contains("$x,$y")) {
+            write-host "$($data[$y][$x])" -ForegroundColor Red -NoNewline
+        }
+        elseif ($data[$y][$x] -eq '.' -and $signals.Contains("$x,$y")) {
+            write-host "#" -ForegroundColor Green -NoNewline
+        }
+        else {
+            write-host "$($data[$y][$x])" -NoNewline
+        }
+    }
+    write-host
+}
+
+$signals.Count
