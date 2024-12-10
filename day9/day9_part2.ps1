@@ -3,9 +3,7 @@ $data = Get-Content -Path .\day9\input.txt
 
 [list[pscustomobject]]$disklayout = @()
 [list[int]]$freespace = @()
-#[list[pscustomobject]]$filechunks = @()
 [stack[pscustomobject]]$filechunks = @()
-#[queue[pscustomobject]]$continuesfreespace = @()
 [list[pscustomobject]]$continuesfreespace = @()
 $diskmap = $data -as [char[]]
 
