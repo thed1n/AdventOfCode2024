@@ -31,17 +31,7 @@ function test-paths {
     }
     $visited["$x,$y"]++
 
-    #if ([int][string]$grid["$x,$y"] -ne $currentNumber) { return }
     if ([int][string]$grid["$x,$y"] -eq 9) { return 1 }
-
-
-    # $skip = ''
-    # switch ($direction) {
-    #     'up' {$skip='down';break }
-    #     'down' {$skip='up';break }
-    #     'left' {$skip='right';break }
-    #     'right' {$skip='left';break }
-    # }
 
     if ([int][string]$grid["$x,$y"] -eq $currentNumber) {
 
@@ -67,11 +57,3 @@ $sum = for ($i = 0; $i -lt $startpositions.count; $i++) {
 }
 
 $sum | Measure-Object -Sum | ForEach-Object sum
-
-
-for ($y = 0; $y -lt $data.count; $y++) {
-    for ($x = 0; $x -lt $data[0].Length; $x++) {
-        Write-Host "$($data[$y][$x])" -ForegroundColor Red -NoNewline
-    }
-    Write-Host
-}
