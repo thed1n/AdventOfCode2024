@@ -26,7 +26,7 @@ class StoneLine {
         1..$rounds | ForEach-Object {
 
             $this.cache = $this.stone.Clone()
-            $this.stone = @{}
+            $this.stone.clear()
             foreach ($key in $this.cache.keys) {
                 #write-host $key
                 switch ($key) {

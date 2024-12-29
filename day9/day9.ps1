@@ -1,6 +1,6 @@
 using namespace system.collections.generic
 $data = Get-Content -Path .\day9\input.txt
-#d2 e3 d3 e3 d1 e3 d3 e1 d2 e1 d4 e1 d4131402
+
 [list[pscustomobject]]$disklayout = @()
 [list[int]]$freespace = @()
 $diskmap = $data -as [char[]]
